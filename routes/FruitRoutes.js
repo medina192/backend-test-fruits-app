@@ -5,7 +5,9 @@ const {
     UpdateFruitStock,
     GetFruitsByCity,
     SendFruit,
-    CreateFruitStock
+    CreateFruitStock,
+    SaveDataForMigration,
+    GetDataForMigration
 } = require('../controllers/FruitController');
 
 const { 
@@ -27,6 +29,10 @@ router.post("/send-fruit", validateBodySendFruit, SendFruit);
 router.post("/fruit-stock", validateBodyUpdateFruitStock, CreateFruitStock)
 
 router.patch('/fruit-stock', validateBodyUpdateFruitStock, UpdateFruitStock);
+
+router.get("/migrate-fruit-from-local", SaveDataForMigration);
+
+router.get("/migrate-fruit-to-cloud", GetDataForMigration);
 
 
 module.exports = router;

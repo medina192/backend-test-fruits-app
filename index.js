@@ -33,6 +33,7 @@ app.use( express.static( path.resolve( __dirname, './public' ) ) );
 app.use( "/api/user", require('./routes/UserRoutes') );
 app.use( '/api/fruit', require('./routes/FruitRoutes') );
 app.use( '/api/city', require('./routes/CityRoutes') );
+app.use( '/api/stock', require('./routes/StockRoutes') );
 
 app.get('*', (req, res) => {
   res.sendFile( path.resolve( __dirname, './public/index.html' ) );

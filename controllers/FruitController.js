@@ -1,6 +1,6 @@
 const Fruit = require("../models/Fruit");
 const Stock = require("../models/Stock");
-const ObjectId = require('mongodb').ObjectId;
+const fs = require('fs');
 
 /*
     http://localhost:3000/api/fruit
@@ -120,10 +120,72 @@ const CreateFruitStock = async(req, res) => {
     }
 }
 
+
+
+const SaveDataForMigration = async(req, res) => {
+
+    try {
+        const fruits = await Fruit.find();
+            // creates a file in the same folder of this file with the text 'hola'
+        fs.writeFile("./migration/FruitMigration/fruits.json", JSON.stringify(fruits), (error) => {
+            if(error) console.log('error', error);
+            console.log('1')
+        })
+
+        return res.json({
+            fruits
+        })
+    } catch (error) {
+        console.log("error", error)
+        return res.status(400).json({
+            message: error
+        })
+    }
+} 
+
+
+const GetDataForMigration = async(req, res) => {
+
+    try {
+        // creates a file in the same folder of this file with the text 'hola'
+    const getFruitsFromJsonFile = new Promise((resolve, reject) => {
+        fs.readFile("./migration/FruitMigration/fruits.json", 'utf-8', (error, data) => {
+            if(error){
+                console.log('error', error);
+                reject(error)
+            }
+            else {
+                const fruitsObj = JSON.parse(data);
+                resolve(fruitsObj);
+            }  // returns a buffer
+        })
+    })
+
+    const fruits = await getFruitsFromJsonFile
+        
+    await Fruit.insertMany(fruits)
+
+
+    return res.json({
+        migration: "completed",
+    })
+    } catch (error) {
+        console.log("error", error)
+        return res.status(400).json({
+            message: error
+        })
+    }
+} 
+
+
+
+
 module.exports = {
     CreateFruit,
     UpdateFruitStock,
     GetFruitsByCity,
     SendFruit,
-    CreateFruitStock 
+    CreateFruitStock,
+    SaveDataForMigration,
+    GetDataForMigration 
 }
