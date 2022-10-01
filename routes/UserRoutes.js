@@ -1,11 +1,8 @@
 const { Router } = require('express');
-//const { validateToken } = require('../middlewares/validateToken');
-
 
 const {
     CreateUser,
     LogIn,
-    //AuthWithToken,
     LogOut
 } = require('../controllers/UserController');
 const { exists } = require('../models/User');

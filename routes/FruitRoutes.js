@@ -1,31 +1,32 @@
 const { Router } = require('express');
-//const { validateToken } = require('../middlewares/validateToken');
-
 
 const {
-    getFruitsByCity,
     CreateFruit,
+    UpdateFruitStock,
+    GetFruitsByCity,
     SendFruit,
-    UpdateFruitStock
+    CreateFruitStock
 } = require('../controllers/FruitController');
 
 const { 
-    validateQueryGetFruits,
-    validateBodyAddFruit,
     validateBodySendFruit,
+    validateBodyGetAllFruitsByCity, 
+    validateBodyAddFruit,
     validateBodyUpdateFruitStock
 } = require('../validators/FruitValidators');
 
 
 const router = Router();
 
-router.get("/fruits-by-city", validateQueryGetFruits, getFruitsByCity)
+router.get("/", validateBodyGetAllFruitsByCity, GetFruitsByCity);
 
 router.post("/", validateBodyAddFruit, CreateFruit);
 
 router.post("/send-fruit", validateBodySendFruit, SendFruit);
 
-router.patch('/stock', validateBodyUpdateFruitStock, UpdateFruitStock);
+router.post("/fruit-stock", validateBodyUpdateFruitStock, CreateFruitStock)
+
+router.patch('/fruit-stock', validateBodyUpdateFruitStock, UpdateFruitStock);
 
 
 module.exports = router;

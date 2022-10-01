@@ -6,20 +6,11 @@ const FruitSchema = Schema({
         required: true,
         unique: true
     },
-    stock: {
-        type: Number,
-        required: true
-    },
-    cityId: {
-        type: Schema.Types.ObjectId,
-        ref: 'City',
-        required: true
-    },
     price: {
         type: Number,
         required: true
     },
-    description: {
+    imgUrl: {
         type: String,
         required: true
     },

@@ -10,4 +10,4 @@ const CitySchema = Schema({
     timestamps: true
 });
 
-module.exports = model('City', CitySchema );
+module.exports = model("City", CitySchema );
