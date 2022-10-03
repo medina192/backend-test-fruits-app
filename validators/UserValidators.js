@@ -25,7 +25,8 @@ const validateBodyLogin = [
         .notEmpty()
         .withMessage('Enter a valid email'),
 	body('password')
-		.isLength({ min: 6, max: 20 })
+        .isString()
+        .notEmpty()
 		.withMessage('Password must be 8 characters long'),
     (req, res, next) => {
         validateResult(req, res, next)

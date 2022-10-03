@@ -1,5 +1,6 @@
 const Fruit = require("../models/Fruit");
 const Stock = require("../models/Stock");
+const City = require("../models/City");
 const fs = require('fs');
 
 /*
@@ -65,8 +66,19 @@ const GetFruitsByCity = async(req, res) => {
 
     try {
         const fruits = await Stock.find({ cityId }).populate("fruitId", ["name", "price", "score", "imgUrl"])
+        const simpleObjFruit = fruits.map((fruit) => {
+            const fruitObj = {
+                _id: fruit.fruitId._id,
+                name: fruit.fruitId.name,
+                imgUrl: fruit.fruitId.imgUrl,
+                price: fruit.fruitId.price,
+                score: fruit.fruitId.score,
+                stock: fruit.stock
+            }
+            return fruitObj
+        })
         return res.json({
-            fruits
+            fruits: simpleObjFruit
         })
     } catch (error) {
         return res.status(400).json({
@@ -75,6 +87,50 @@ const GetFruitsByCity = async(req, res) => {
     }
 }
 
+const GetAllFruits = async(req, res) => {
+
+    try {
+        const fruits = await Stock.find().populate("fruitId", ["name", "price", "score", "imgUrl"]).populate("cityId", [ "name" ])
+        const simpleObjFruit = fruits.map((fruit) => {
+            const fruitObj = {
+                _id: fruit.fruitId._id,
+                name: fruit.fruitId.name,
+                imgUrl: fruit.fruitId.imgUrl,
+                price: fruit.fruitId.price,
+                score: fruit.fruitId.score,
+                stock: fruit.stock,
+                cityId: fruit.cityId._id,
+                cityName: fruit.cityId.name 
+            }
+            return fruitObj
+        })
+
+        const groupFruitsByCity = simpleObjFruit.reduce((group, fruit) => {
+            const { cityName } = fruit;
+            group[cityName] = group[cityName] ?? [];
+            group[cityName].push(fruit);
+            return group;
+          }, {});
+
+          const groupByFruitsCityArray = []
+          for(const keyCityName in groupFruitsByCity)
+          {
+            groupByFruitsCityArray.push({ 
+                cityName: keyCityName, 
+                cityId: groupFruitsByCity[keyCityName][0].cityId,
+                fruits: groupFruitsByCity[keyCityName]}) 
+          }
+
+        return res.json({
+            groups: groupByFruitsCityArray
+        })
+    } catch (error) {
+        console.log("error", error);
+        return res.status(400).json({
+            message: error
+        })
+    }
+}
 
 const UpdateFruitStock = async(req, res) => {
     
@@ -187,5 +243,6 @@ module.exports = {
     SendFruit,
     CreateFruitStock,
     SaveDataForMigration,
-    GetDataForMigration 
+    GetDataForMigration,
+    GetAllFruits  
 }

@@ -7,7 +7,8 @@ const {
     SendFruit,
     CreateFruitStock,
     SaveDataForMigration,
-    GetDataForMigration
+    GetDataForMigration,
+    GetAllFruits 
 } = require('../controllers/FruitController');
 
 const { 
@@ -20,7 +21,9 @@ const {
 
 const router = Router();
 
-router.get("/", validateBodyGetAllFruitsByCity, GetFruitsByCity);
+router.get("/", GetAllFruits);
+
+router.post("/get-fruits-by-city",  GetFruitsByCity);
 
 router.post("/", validateBodyAddFruit, CreateFruit);
 

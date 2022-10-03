@@ -10,4 +10,9 @@ const CitySchema = Schema({
     timestamps: true
 });
 
+CitySchema.method('toJSON', function() {
+    const { __v,  updatedAt, createdAt, ...object } = this.toObject();
+    return object;
+});
+
 module.exports = model("City", CitySchema );

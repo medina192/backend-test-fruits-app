@@ -19,6 +19,21 @@ const CreateCity = async(req, res) => {
 } 
 
 
+const GetAllCities = async(req, res) => {
+
+    try {
+
+        const cities = await City.find()
+        return res.json({
+            cities
+        })
+    } catch (error) {
+        return res.status(400).json({
+            message: error
+        })
+    }
+} 
+
 
 const SaveDataForMigration = async(req, res) => {
 
@@ -76,6 +91,7 @@ const GetDataForMigration = async(req, res) => {
 
 module.exports = {
     CreateCity,
+    GetAllCities,
     SaveDataForMigration,
     GetDataForMigration
 }

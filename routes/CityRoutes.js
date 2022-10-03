@@ -2,6 +2,7 @@ const { Router } = require('express');
 
 const {
     CreateCity,
+    GetAllCities,
     SaveDataForMigration,
     GetDataForMigration
 } = require('../controllers/CityController');
@@ -12,6 +13,8 @@ const {
 
 
 const router = Router();
+
+router.get("/", GetAllCities)
 
 router.post("/", validateBodyCreateCity , CreateCity);
 

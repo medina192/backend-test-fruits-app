@@ -22,4 +22,9 @@ const FruitSchema = Schema({
     timestamps: true
 });
 
+FruitSchema.method('toJSON', function() {
+    const { __v, updatedAt, createdAt, ...object } = this.toObject();
+    return object;
+});
+
 module.exports = model("Fruit", FruitSchema );

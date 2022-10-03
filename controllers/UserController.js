@@ -43,7 +43,6 @@ const CreateUser = async( req, res ) => {
 const LogIn = async(req, res) => {
 
     const { email, password } = req.body;
-
     try {
         const user = await User.findOne({ email });
         
@@ -54,7 +53,7 @@ const LogIn = async(req, res) => {
             })
         }
 
-        const hash = bcrypt.hashSync(password, saltRounds);
+        const hash = bcrypt.hashSync(password, 10);
 
         if( bcrypt.compareSync( hash, user.password) ) // the order matters
         {
@@ -63,11 +62,7 @@ const LogIn = async(req, res) => {
             })
         }
 
-        //await User.findOneAndUpdate({email}, { online: true }, { new: true });
-
-        const token = createToken(user.id);
         res.json({
-            token,
             user
         });
 
